@@ -9,19 +9,19 @@ struct buffer_pool;
 struct fft_private;
 
 class fft {
-  const int batch, n, dist, channels;
-  std::unique_ptr<struct fft_private> p;
+	const unsigned int n;
+	std::unique_ptr<struct fft_private> p;
 
- public:
-  explicit fft(int batch, int n, int dist, int channels);
+public:
+	explicit fft(unsigned int n);
 
-  ~fft();
+	~fft();
 
-  void compute(double *);
+	void compute(double *);
 
-  double *get_buffer();
+	double *get_buffer();
 
-  void put_buffer(double *);
+	void put_buffer(double *);
 };
 
 #endif //WAV2BMP_FFT_HPP

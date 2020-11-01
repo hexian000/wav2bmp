@@ -8,20 +8,20 @@
 struct sndfile_private;
 
 class sndfile {
-  std::unique_ptr<struct sndfile_private> p;
+	std::unique_ptr<struct sndfile_private> p;
 
- public:
-  explicit sndfile(const std::string &path);
+public:
+	explicit sndfile(const std::string &path);
 
-  ~sndfile();
+	~sndfile();
 
-  int channels();
+	int channels();
 
-  int sample_rate();
+	int sample_rate();
 
-  std::size_t length();
+	std::size_t length();
 
-  std::size_t read(double *buf, std::size_t n);
+	std::size_t read(double *buf, std::size_t n);
 };
 
 #endif //WAV2BMP_SNDFILE_HPP

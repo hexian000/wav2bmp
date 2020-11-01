@@ -9,30 +9,28 @@
 #include <vector>
 
 class thread_pool {
-  typedef std::function<void()> task_t;
+	std::vector<std::thread> threads;
+	std::deque<std::function<void()>> task_queue;
 
-  unsigned int n;
+	mutable std::mutex mu;
+	mutable std::condition_variable task_cond;
+	mutable std::condition_variable idle_cond;
 
-  std::vector<std::thread> threads;
+	bool done;
+	unsigned int running_count;
 
-  mutable std::mutex queue_mutex;
+	void thread_main();
 
-  mutable std::condition_variable task_cond;
+public:
+	explicit thread_pool(unsigned int n);
 
-  std::deque<task_t> task_queue;
+	void push(std::function<void()> &&task);
 
-  bool done;
+	void join();
 
-  void thread_main();
+	void shutdown();
 
- public:
-  explicit thread_pool(unsigned int n);
-
-  void push(task_t &&task);
-
-  void shutdown();
-
-  ~thread_pool();
+	~thread_pool();
 };
 
 #endif //THREAD_POOL_HPP
