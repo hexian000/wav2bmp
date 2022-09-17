@@ -56,7 +56,7 @@ struct fft_private {
 		pool.put(buf);
 		const auto divider = static_cast<double>(n - 1);
 		auto &w = const_cast<std::vector<double> &>(window);
-		for (int i = 0; i < n; i++) {
+		for (unsigned int i = 0; i < n; i++) {
 			w[i] = Blackman_Harris(static_cast<double>(i) / divider);
 		}
 	}
@@ -76,7 +76,7 @@ fft::~fft() {
 
 void fft::compute(double *buf) {
 	const auto &w = p->window;
-	for (int i = 0; i < n; i++) {
+	for (unsigned int i = 0; i < n; i++) {
 		buf[i] *= w[i];
 	}
 	fftw_execute_r2r(p->plan, buf, buf);

@@ -37,6 +37,10 @@ void wav2bmp::run() const {
 	const auto dist = static_cast<unsigned>(std::floor(sample_rate / op.resolution));
 	const auto count = static_cast<unsigned>((length - n) / dist) + 1u;
 
+	if (length < n || height < 16u || count < 16u) {
+		throw wav2bmp_error("sound file is too short or improper arguments");
+	}
+
 	cerr << op.input << " => " << op.output << endl;
 	cerr << "sample rate: " << sample_rate << ", channels: " << channels << endl;
 	cerr << "n=" << n << ", dist=" << dist << endl;
@@ -65,10 +69,10 @@ void wav2bmp::run() const {
 		thread_pool executor(thread::hardware_concurrency());
 		for (int ch = 0; ch < channels; ch++) {
 			cerr << "channel " << ch << ": compute " << count << " " << n << "-point FFTs" << endl;
-			for (int j = 0; j < count; j++) {
+			for (unsigned j = 0; j < count; j++) {
 				executor.push([&transform, &raw, &s, n, j, dist, channels, ch, logarithmic]() {
 					auto buf = transform.get_buffer();
-					for (int k = 0; k < n; k++) {
+					for (unsigned k = 0; k < n; k++) {
 						buf[k] = raw[(j * dist + k) * channels + ch];
 					}
 					transform.compute(buf);

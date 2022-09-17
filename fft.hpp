@@ -5,7 +5,7 @@
 #include <memory>
 #include <stack>
 
-struct buffer_pool;
+class buffer_pool;
 struct fft_private;
 
 class fft {

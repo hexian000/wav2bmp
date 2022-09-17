@@ -14,7 +14,7 @@ struct options {
 	options()
 			: size(4096), resolution(16.0), brightness(1e-3),
 			  cut_down_frequency(440.0 * 32.0),
-			  logarithmic(false),
+			  logarithmic(0.0),
 			  start_frequency(440.0 / 32.0) {}
 
 	void check();
